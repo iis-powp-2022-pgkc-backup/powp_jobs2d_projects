@@ -8,11 +8,11 @@ import edu.kis.powp.jobs2d.Job2dDriver;
  * Line adapter - Job2dDriver with DrawPanelController object.
  */
 public class LineDriverAdapter implements Job2dDriver {
-	private ILine line;
-	private int startX = 0, startY = 0;
-	private String name;
+	protected ILine line;
+	protected int startX = 0, startY = 0;
+	protected String name;
 
-	private DrawPanelController drawController;
+	protected DrawPanelController drawController;
 
 	public LineDriverAdapter(DrawPanelController drawController, ILine line, String name) {
 		super();
