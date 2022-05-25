@@ -52,7 +52,6 @@ public class TestJobs2dApp {
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Test complex command builder", new SelectLoadComplexCommandListener(
 				ComplexCommandFactory.getSquareCommand()));
-		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
 		// Selecting another driver resets previous transformer commands for this driver.
 		addTranslateTest(application);
