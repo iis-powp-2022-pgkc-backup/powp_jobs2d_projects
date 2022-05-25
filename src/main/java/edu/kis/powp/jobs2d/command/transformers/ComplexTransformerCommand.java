@@ -1,5 +1,7 @@
 package edu.kis.powp.jobs2d.command.transformers;
 
+import edu.kis.powp.jobs2d.command.visitor.ICommandVisitor;
+
 import java.util.List;
 
 public class ComplexTransformerCommand implements TransformerCommand {
@@ -15,5 +17,10 @@ public class ComplexTransformerCommand implements TransformerCommand {
 		for (TransformerCommand command : transformerCommands)
 			transformedCoords = command.execute(transformedCoords);
 		return transformedCoords;
+	}
+
+	@Override
+	public void accept(ICommandVisitor visitor) {
+		visitor.visit(this);
 	}
 }
