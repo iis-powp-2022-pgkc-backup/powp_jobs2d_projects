@@ -9,7 +9,7 @@ import edu.kis.powp.jobs2d.command.visitor.ICommandVisitor;
 import java.util.Iterator;
 
 public class IsInBoundsVisitor implements ICommandVisitor {
-	private boolean isInBounds;
+	private boolean isInBounds = true;
 	private Canvas canvas;
 
 	public IsInBoundsVisitor(Canvas canvas) {

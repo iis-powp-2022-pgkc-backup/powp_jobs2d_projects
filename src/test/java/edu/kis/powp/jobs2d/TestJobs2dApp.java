@@ -16,6 +16,8 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.command.visitor.canvas.A4Canvas;
 import edu.kis.powp.jobs2d.command.visitor.canvas.Canvas;
+import edu.kis.powp.jobs2d.command.visitor.canvas.CustomCanvas;
+import edu.kis.powp.jobs2d.command.visitor.canvas.SmallCanvas;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 
 import edu.kis.powp.jobs2d.events.DrawLineMouseListener;
@@ -56,6 +58,8 @@ public class TestJobs2dApp {
 				ComplexCommandFactory.getSquareCommand()));
 
 		application.addTest("Canvas checker A4", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new A4Canvas()));
+		application.addTest("Canvas checker small test", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new SmallCanvas()));
+		application.addTest("Canvas checker custom", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new CustomCanvas(133,144)));
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 

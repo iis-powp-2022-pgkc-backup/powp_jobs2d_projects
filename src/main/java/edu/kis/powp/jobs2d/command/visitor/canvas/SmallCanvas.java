@@ -1,8 +1,8 @@
 package edu.kis.powp.jobs2d.command.visitor.canvas;
 
-public class A4Canvas extends Canvas {
-	public A4Canvas() {
-		super(210, 297);
+public class SmallCanvas extends Canvas {
+	public SmallCanvas() {
+		super(50, 50);
 	}
 
 	@Override
@@ -12,6 +12,6 @@ public class A4Canvas extends Canvas {
 
 	@Override
 	public String toString() {
-		return "A4 – " + width + "x" + height;
+		return "Small – " + width + "x" + height;
 	}
 }
