@@ -114,7 +114,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	public void loadCommands() {
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.json", "json"));
 
 		int fileChooserState = fileChooser.showOpenDialog(this);
