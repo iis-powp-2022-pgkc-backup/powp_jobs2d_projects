@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.visitor.canvas.Canvas;
+import edu.kis.powp.jobs2d.command.visitor.canvas.ICanvas;
 import edu.kis.powp.jobs2d.command.visitor.canvas.IsInBoundsVisitor;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 public class SelectVisitorExceedingCanvasComplexCommandListener implements ActionListener {
     private Logger logger = Logger.getLogger("global");
     private DriverManager driverManager;
-    private Canvas canvas;
+    private ICanvas canvas;
 
-    public SelectVisitorExceedingCanvasComplexCommandListener(DriverManager driverManager, Canvas canvas) {
+    public SelectVisitorExceedingCanvasComplexCommandListener(DriverManager driverManager, ICanvas canvas) {
         this.driverManager = driverManager;
         this.canvas = canvas;
     }

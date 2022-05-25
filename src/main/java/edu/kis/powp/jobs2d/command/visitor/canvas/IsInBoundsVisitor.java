@@ -10,27 +10,20 @@ import java.util.Iterator;
 
 public class IsInBoundsVisitor implements ICommandVisitor {
 	private boolean isInBounds = true;
-	private Canvas canvas;
+	private ICanvas canvas;
 
-	public IsInBoundsVisitor(Canvas canvas) {
+	public IsInBoundsVisitor(ICanvas canvas) {
 		this.canvas = canvas;
 	}
 
-	// Trzeba jakoś zareagować na wszystkie możliwe do wykonania komendy.
-	// Trzeba sprawdzić, czy po wykonaniu komendy głowica nie wyszła poza mapę.
 	@Override
 	public void visit(OperateToCommand operateToCommand) {
-		if(!canvas.isInBounds(operateToCommand.getPosX(),operateToCommand.getPosY())) {
-			isInBounds=false;
-		}
-
+		isInBounds = canvas.isInBounds(operateToCommand.getPosX(), operateToCommand.getPosY());
 	}
 
 	@Override
 	public void visit(SetPositionCommand setPositionCommand) {
-		if(!canvas.isInBounds(setPositionCommand.getPosX(),setPositionCommand.getPosY())) {
-			isInBounds=false;
-		}
+		isInBounds = canvas.isInBounds(setPositionCommand.getPosX(), setPositionCommand.getPosY());
 	}
 
 	@Override
@@ -39,6 +32,8 @@ public class IsInBoundsVisitor implements ICommandVisitor {
 		while (iterator.hasNext()) {
 			DriverCommand driverCommand = iterator.next();
 			driverCommand.accept(this);
+			if (!isInBounds)
+				return;
 		}
 	}
 
