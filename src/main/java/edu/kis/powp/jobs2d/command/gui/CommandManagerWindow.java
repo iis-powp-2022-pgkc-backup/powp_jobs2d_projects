@@ -5,6 +5,8 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.io.CommandLoaderFactory;
 import edu.kis.powp.jobs2d.command.io.ICommandLoader;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
+import edu.kis.powp.jobs2d.features.CommandsFeature;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Subscriber;
 
 import javax.swing.*;
@@ -58,6 +60,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
 
+		JButton btnRunCommands = new JButton("Run commands");
+		btnRunCommands.addActionListener((ActionEvent e) -> this.runCommands());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnRunCommands, c);
+
 		JButton btnLoadCommands = new JButton("Load commands");
 		btnLoadCommands.addActionListener((ActionEvent e) -> this.loadCommands());
 		c.fill = GridBagConstraints.BOTH;
@@ -81,6 +91,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(btnClearObservers, c);
+	}
+
+	private void runCommands() {
+		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
+		command.execute(DriverFeature.getDriverManager().getCurrentDriver());
 	}
 
 	private void clearCommand() {
