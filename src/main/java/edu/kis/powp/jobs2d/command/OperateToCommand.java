@@ -31,4 +31,11 @@ public class OperateToCommand implements DriverCommand {
 		return new OperateToCommand(posX,posY);
 	}
 
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
 }

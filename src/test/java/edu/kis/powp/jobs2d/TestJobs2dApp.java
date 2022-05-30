@@ -14,6 +14,7 @@ import edu.kis.powp.jobs2d.command.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.transformers.*;
+import edu.kis.powp.jobs2d.command.visitor.canvas.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 
 import edu.kis.powp.jobs2d.events.DrawLineMouseListener;
@@ -52,6 +53,13 @@ public class TestJobs2dApp {
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Test complex command builder", new SelectLoadComplexCommandListener(
 				ComplexCommandFactory.getSquareCommand()));
+
+		application.addTest("Canvas checker A4", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new A4Canvas()));
+		application.addTest("Canvas checker small test", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new SmallRectangleCanvas()));
+		application.addTest("Canvas checker custom", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new RectangleCanvas(133,144)));
+		application.addTest("Canvas checker small circle", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new CircleCanvas(50, "small circle")));
+		application.addTest("Canvas checker big circle", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new CircleCanvas(150, "big circle")));
+
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
 		// Selecting another driver resets previous transformer commands for this driver.
