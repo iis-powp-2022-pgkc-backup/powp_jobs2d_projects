@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,12 +12,16 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.visitor.CommandCountingVisitor;
+import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
+import edu.kis.powp.jobs2d.events.SelectCommandsCountingVisitorOptionListner;
 import edu.kis.powp.jobs2d.factories.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawOnFreePanelFeature;
@@ -27,7 +33,7 @@ public class TestJobs2dApp {
 
 	/**
 	 * Setup test concerning preset figures in context.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupPresetTests(Application application) {
@@ -48,7 +54,7 @@ public class TestJobs2dApp {
 
 	/**
 	 * Setup test using driver commands in context.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupCommandTests(Application application) {
@@ -58,25 +64,38 @@ public class TestJobs2dApp {
 
 	}
 
+	private static void setupVisitors(Application application) {
+		application.addTest("Commands Counting Visitor", new SelectCommandsCountingVisitorOptionListner(logger, new CommandCountingVisitor(logger)));
+	}
+
 	/**
 	 * Setup driver manager, and set default Job2dDriver for application.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
+		DriverComposite driverComposite = new DriverComposite();
+		DriverFeature.addDriver("Line, Logger, Special Simulators", driverComposite);
+
 		DriverUpdateInfoObserver observer = new DriverUpdateInfoObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(observer);
 
 		Job2dDriver loggerDriver = new LoggerDriver();
 		DriverFeature.addDriver("Logger driver", loggerDriver);
+		driverComposite.addDriver(loggerDriver);
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
 		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
 		DriverFeature.addDriver("Line Simulator", driver);
-		DriverFeature.getDriverManager().setCurrentDriver(driver);
+		driverComposite.addDriver(driver);
+
+		DriverFeature.addDriver("Line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
 
 		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Special line Simulator", driver);
+		driverComposite.addDriver(driver);
+
+		DriverFeature.addDriver("Special line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
 	}
 
 	private static void setupWindows(Application application) {
@@ -91,7 +110,7 @@ public class TestJobs2dApp {
 
 	/**
 	 * Setup menu for adjusting logging settings.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupLogger(Application application) {
@@ -124,6 +143,7 @@ public class TestJobs2dApp {
 				setupCommandTests(app);
 				setupLogger(app);
 				setupWindows(app);
+				setupVisitors(app);
 
 				DrawOnFreePanelFeature.setupButtonClick(app, DriverFeature.getDriverManager());
 
