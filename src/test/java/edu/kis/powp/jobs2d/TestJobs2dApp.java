@@ -2,8 +2,6 @@ package edu.kis.powp.jobs2d;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +15,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
+import edu.kis.powp.jobs2d.drivers.adapter.TransformDriverAdapter;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
@@ -96,6 +95,11 @@ public class TestJobs2dApp {
 		driverComposite.addDriver(driver);
 
 		DriverFeature.addDriver("Special line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
+		DriverFeature.updateDriverInfo();
+
+		driver = new TransformDriverAdapter(drawerController, LineFactory.getBasicLine(), "transformed");
+		DriverFeature.addDriver("Move line to the right Simulator", driver);
+		DriverFeature.updateDriverInfo();
 	}
 
 	private static void setupWindows(Application application) {
@@ -144,6 +148,8 @@ public class TestJobs2dApp {
 				setupLogger(app);
 				setupWindows(app);
 				setupVisitors(app);
+
+				DrawOnFreePanelFeature.setupButtonClick(app, DriverFeature.getDriverManager());
 
 				DrawOnFreePanelFeature.setupButtonClick(app, DriverFeature.getDriverManager());
 
