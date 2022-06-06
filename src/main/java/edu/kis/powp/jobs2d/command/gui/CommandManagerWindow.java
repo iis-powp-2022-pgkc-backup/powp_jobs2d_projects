@@ -1,14 +1,11 @@
 package edu.kis.powp.jobs2d.command.gui;
 
-import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.CommandPreviewPanelController;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.io.CommandLoaderFactory;
 import edu.kis.powp.jobs2d.command.io.ICommandLoader;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
 import javax.swing.*;
@@ -22,12 +19,10 @@ import java.util.Scanner;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
-	private final DrawPanelController previewPanelDrawerController;
-	private final Job2dDriver driver;
+	private final CommandPreviewPanelController commandPreviewPanelController;
 	private DriverCommandManager commandManager;
 
 	private JTextArea currentCommandField;
-	private JPanel currentCommandPreviewPanel;
 
 	private String observerListString;
 	private JTextArea observerListField;
@@ -37,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	 */
 	private static final long serialVersionUID = 9204679248304669948L;
 
-	public CommandManagerWindow(DriverCommandManager commandManager) {
+	public CommandManagerWindow(DriverCommandManager commandManager, CommandPreviewPanelController commandPreviewPanelController) {
 		this.setTitle("Command Manager");
 		this.setSize(400, 500);
 		Container content = this.getContentPane();
@@ -65,10 +60,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
 
-		currentCommandPreviewPanel = new JPanel();
-		previewPanelDrawerController = new DrawPanelController();
-		previewPanelDrawerController.initialize(currentCommandPreviewPanel);
-		driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
+		this.commandPreviewPanelController = commandPreviewPanelController;
+		JPanel currentCommandPreviewPanel = this.commandPreviewPanelController.getCommandPreviewPanel();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
@@ -100,18 +93,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(btnClearObservers, c);
 	}
 
-	public void updateCurrentCommandPreviewPanel() {
-		DriverCommand currentCommand = commandManager.getCurrentCommand();
-		previewPanelDrawerController.clearPanel();
-		if (currentCommand != null) {
-			currentCommand.execute(driver);
-		}
-	}
-
 	private void clearCommand() {
 		commandManager.clearCurrentCommand();
 		updateCurrentCommandField();
-		updateCurrentCommandPreviewPanel();
+		commandPreviewPanelController.updateCommandPreviewPanel();
+
 	}
 
 	public void updateCurrentCommandField() {
@@ -163,6 +149,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 			observerListString = "No observers loaded";
 
 		observerListField.setText(observerListString);
+	}
+
+	public CommandPreviewPanelController getCommandPreviewPanelController() {
+		return commandPreviewPanelController;
 	}
 
 	@Override
