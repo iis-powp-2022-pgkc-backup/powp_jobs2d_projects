@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.panelcontroller.CommandPreviewPanelController;
 import edu.kis.powp.jobs2d.command.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -25,6 +26,8 @@ import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+
+import javax.swing.*;
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -140,8 +143,13 @@ public class TestJobs2dApp {
 	}
 
 	private static void setupWindows(Application application) {
+		JPanel previewPanel = new JPanel();
+		DrawPanelController previewPanelDrawerController = new DrawPanelController();
+		previewPanelDrawerController.initialize(previewPanel);
+		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
+		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
-		CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
+		CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager(), previewPanelController);
 		application.addWindowComponent("Command Manager", commandManager);
 
 		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
