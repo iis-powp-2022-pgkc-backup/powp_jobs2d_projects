@@ -1,12 +1,13 @@
-package edu.kis.powp.jobs2d.command;
+package edu.kis.powp.jobs2d.command.panelcontroller;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 
 import javax.swing.*;
 
-public class CommandPreviewPanelController {
+public class CommandPreviewPanelController implements IPreviewPanelController {
 
 	private JPanel commandPreviewPanel;
 	private DriverCommandManager commandManager;
@@ -20,7 +21,8 @@ public class CommandPreviewPanelController {
 		this.previewPanelDrawerController = drawPanelController;
 	}
 
-	public void updateCommandPreviewPanel() {
+	@Override
+	public void updatePreviewPanel() {
 		DriverCommand currentCommand = commandManager.getCurrentCommand();
 		previewPanelDrawerController.clearPanel();
 		if (currentCommand != null) {
@@ -28,7 +30,8 @@ public class CommandPreviewPanelController {
 		}
 	}
 
-	public JPanel getCommandPreviewPanel() {
+	@Override
+	public JPanel getPreviewPanel() {
 		return commandPreviewPanel;
 	}
 }

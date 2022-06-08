@@ -1,11 +1,11 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.command.CommandPreviewPanelController;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.io.CommandLoaderFactory;
 import edu.kis.powp.jobs2d.command.io.ICommandLoader;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
+import edu.kis.powp.jobs2d.command.panelcontroller.IPreviewPanelController;
 import edu.kis.powp.observer.Subscriber;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
-	private final CommandPreviewPanelController commandPreviewPanelController;
+	private final IPreviewPanelController commandPreviewPanelController;
 	private DriverCommandManager commandManager;
 
 	private JTextArea currentCommandField;
@@ -32,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	 */
 	private static final long serialVersionUID = 9204679248304669948L;
 
-	public CommandManagerWindow(DriverCommandManager commandManager, CommandPreviewPanelController commandPreviewPanelController) {
+	public CommandManagerWindow(DriverCommandManager commandManager, IPreviewPanelController commandPreviewPanelController) {
 		this.setTitle("Command Manager");
 		this.setSize(400, 500);
 		Container content = this.getContentPane();
@@ -61,7 +61,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		updateCurrentCommandField();
 
 		this.commandPreviewPanelController = commandPreviewPanelController;
-		JPanel currentCommandPreviewPanel = this.commandPreviewPanelController.getCommandPreviewPanel();
+		JPanel currentCommandPreviewPanel = this.commandPreviewPanelController.getPreviewPanel();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
@@ -96,7 +96,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private void clearCommand() {
 		commandManager.clearCurrentCommand();
 		updateCurrentCommandField();
-		commandPreviewPanelController.updateCommandPreviewPanel();
+		commandPreviewPanelController.updatePreviewPanel();
 
 	}
 
@@ -151,7 +151,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		observerListField.setText(observerListString);
 	}
 
-	public CommandPreviewPanelController getCommandPreviewPanelController() {
+	public IPreviewPanelController getCommandPreviewPanelController() {
 		return commandPreviewPanelController;
 	}
 
