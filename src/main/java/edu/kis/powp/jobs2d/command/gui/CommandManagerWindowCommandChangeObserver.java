@@ -4,11 +4,13 @@ import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindowCommandChangeObserver implements Subscriber {
 
-	private CommandManagerWindow commandManagerWindow;
+	private final CommandManagerWindow commandManagerWindow;
+	private final ICommandManagerService commandManagerService;
 
-	public CommandManagerWindowCommandChangeObserver(CommandManagerWindow commandManagerWindow) {
+	public CommandManagerWindowCommandChangeObserver(CommandManagerWindow commandManagerWindow, ICommandManagerService commandManagerService) {
 		super();
 		this.commandManagerWindow = commandManagerWindow;
+		this.commandManagerService = commandManagerService;
 	}
 
 	public String toString() {
@@ -18,7 +20,7 @@ public class CommandManagerWindowCommandChangeObserver implements Subscriber {
 	@Override
 	public void update() {
 		commandManagerWindow.updateCurrentCommandField();
-		commandManagerWindow.getCommandPreviewPanelController().updatePreviewPanel();
+		commandManagerService.getCommandPreviewPanelController().updatePreviewPanel();
 	}
 
 }

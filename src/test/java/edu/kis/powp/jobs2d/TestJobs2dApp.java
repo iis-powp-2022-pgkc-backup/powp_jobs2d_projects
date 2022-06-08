@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.gui.CommandManagerService;
 import edu.kis.powp.jobs2d.command.panelcontroller.CommandPreviewPanelController;
 import edu.kis.powp.jobs2d.command.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -149,11 +150,13 @@ public class TestJobs2dApp {
 		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
 		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
-		CommandManagerWindow commandManager = new CommandManagerWindow(previewPanelController);
+		CommandManagerService commandManagerService = new CommandManagerService(previewPanelController);
+
+		CommandManagerWindow commandManager = new CommandManagerWindow(commandManagerService);
 		application.addWindowComponent("Command Manager", commandManager);
 
-		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-			commandManager);
+		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(commandManager, commandManagerService);
+
 		CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
 	}
 
