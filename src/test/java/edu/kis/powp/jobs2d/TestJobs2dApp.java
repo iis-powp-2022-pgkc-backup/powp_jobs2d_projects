@@ -149,7 +149,7 @@ public class TestJobs2dApp {
 		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
 		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
-		CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager(), previewPanelController);
+		CommandManagerWindow commandManager = new CommandManagerWindow(previewPanelController);
 		application.addWindowComponent("Command Manager", commandManager);
 
 		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
