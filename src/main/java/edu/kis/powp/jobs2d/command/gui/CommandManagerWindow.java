@@ -26,8 +26,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private final DriverCommandManager commandManager = CommandsFeature.getDriverCommandManager();
 	private final IPreviewPanelController commandPreviewPanelController;
 	private final JTextArea currentCommandField;
-
-	private JTextArea observerListField;
+	private final JTextArea observerListField;
 
 	/**
 	 *
