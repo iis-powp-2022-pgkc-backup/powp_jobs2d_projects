@@ -88,7 +88,6 @@ public class TestJobs2dApp {
 
 		HistoryManagerWindow historyManager = new HistoryManagerWindow(CommandsFeature.getDriverCommandManager());
 		application.addWindowComponent("History Manager", historyManager);
-
 	}
 
 	/**

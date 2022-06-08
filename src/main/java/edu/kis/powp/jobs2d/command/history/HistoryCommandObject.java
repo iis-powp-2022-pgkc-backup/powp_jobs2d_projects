@@ -6,9 +6,9 @@ import edu.kis.powp.jobs2d.command.ICompoundCommand;
 public class HistoryCommandObject {
     private String name;
     private String date;
-    private ICompoundCommand command;
+    private DriverCommand command;
 
-    public HistoryCommandObject(String date, String name, ICompoundCommand command) {
+    public HistoryCommandObject(String date, String name, DriverCommand command) {
         this.date = date;
         this.name = name;
         this.command = command;
