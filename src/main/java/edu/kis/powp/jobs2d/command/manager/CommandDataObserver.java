@@ -14,19 +14,20 @@ public class CommandDataObserver implements Subscriber {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	CountCommandVisitor countCommandVisitor = new CountCommandVisitor();
 	SurfaceCommandVisitor surfaceCountCommandVisitor = new SurfaceCommandVisitor();
-//	CommandLengthVisitor lengthVisitor = new CommandLengthVisitor();
+	CommandLengthVisitor lengthVisitor = new CommandLengthVisitor();
 
 	public void update() {
 		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
 		command.accept(countCommandVisitor);
 		command.accept(surfaceCountCommandVisitor);
-//		command.accept(lengthVisitor);
+		command.accept(lengthVisitor);
 
 
 		logger.info("Command size: " + countCommandVisitor.getCountedCommands() +
 				"\n   Command surface size: " + surfaceCountCommandVisitor.getCountedCommands() +
-
+				"\n   Command length: " + lengthVisitor.getLength() +
 				"\n   Command name: " + command);
+
 	}
 
 	public String toString() {

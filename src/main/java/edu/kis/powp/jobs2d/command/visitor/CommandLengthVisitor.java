@@ -11,6 +11,8 @@ import java.util.Iterator;
 
 public class CommandLengthVisitor implements ICommandVisitor {
     private double length = 0;
+    static int currentX = 0;
+    static int currentY = 0;
 
     private double calcDistance(int fromX, int fromY, int toX, int toY) {
         return Math.sqrt((toY - fromY) * (toY - fromY) + (toX - fromX) * (toX - fromX));
@@ -18,18 +20,23 @@ public class CommandLengthVisitor implements ICommandVisitor {
 
     @Override
     public void visit(OperateToCommand operateToCommand) {
-        length = calcDistance(0, 0, operateToCommand.getPosX(), operateToCommand.getPosY());
+        length = calcDistance(currentX, currentY, operateToCommand.getPosX(), operateToCommand.getPosY());
+        currentX = operateToCommand.getPosX();
+        currentY = operateToCommand.getPosY();
     }
 
     @Override
     public void visit(SetPositionCommand setPositionCommand) {
         length = 0;
+        currentX = setPositionCommand.getPosX();
+        currentY = setPositionCommand.getPosY();
     }
 
     @Override
     public void visit(ICompoundCommand compoundCommand) {
         float totalSize = 0;
-        for (Iterator<DriverCommand> it = compoundCommand.iterator(); it.hasNext(); it.next()) {
+        for (Iterator<DriverCommand> it = compoundCommand.iterator(); it.hasNext();) {
+
             it.next().accept(this);
             totalSize += length;
         }
