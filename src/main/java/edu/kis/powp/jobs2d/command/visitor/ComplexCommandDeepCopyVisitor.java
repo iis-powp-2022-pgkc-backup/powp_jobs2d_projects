@@ -1,21 +1,42 @@
 package edu.kis.powp.jobs2d.command.visitor;
 
-import edu.kis.powp.jobs2d.command.ComplexCommand;
-import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.*;
 
-public class ComplexCommandDeepCopyVisitor implements IComplexCommandDeepCopyVisitor {
+import java.util.Iterator;
+
+public class ComplexCommandDeepCopyVisitor implements IDriverCommandsVisitor {
     private ComplexCommand deepCopyOfComplexCommand = null;
 
     @Override
-    public void doForComplexCommand(ComplexCommand command) {
-        deepCopyOfComplexCommand = new ComplexCommand();
-        for(DriverCommand driverCommand : command.getCommandList()) {
-            DriverCommand tempDriverCommand = driverCommand.driverCommandClone();
-            deepCopyOfComplexCommand.appendCommand(tempDriverCommand);
+    public void doForOperateToCommand(OperateToCommand command) {
+        if(deepCopyOfComplexCommand != null)
+            deepCopyOfComplexCommand.appendCommand(command.driverCommandClone());
+    }
+
+    @Override
+    public void doForSetPositionCommand(SetPositionCommand command) {
+        if(deepCopyOfComplexCommand != null)
+            deepCopyOfComplexCommand.appendCommand(command.driverCommandClone());
+    }
+
+    @Override
+    public void doForCompoundCommand(ICompoundCommand command) {
+        if(deepCopyOfComplexCommand == null) {
+            deepCopyOfComplexCommand = new ComplexCommand();
+            Iterator<DriverCommand> iterator = command.iterator();
+            while (iterator.hasNext()) {
+                iterator.next().accept(this);
+            }
+        }
+        else {
+            ComplexCommandDeepCopyVisitor visitor = new ComplexCommandDeepCopyVisitor();
+            command.accept(visitor);
+            deepCopyOfComplexCommand.appendCommand(visitor.getDeepCopyOfComplexCommand());
         }
     }
 
     public ComplexCommand getDeepCopyOfComplexCommand() {
         return deepCopyOfComplexCommand;
     }
+
 }
