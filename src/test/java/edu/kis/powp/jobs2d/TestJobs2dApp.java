@@ -2,19 +2,20 @@ package edu.kis.powp.jobs2d;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.gui.CommandManagerPreview;
+
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.visitor.CommandCountingVisitor;
+
+import edu.kis.powp.jobs2d.command.gui.CommandManagerPreview;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
+
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
@@ -38,9 +39,18 @@ public class TestJobs2dApp {
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.FIGURE1);
 		SelectTestFigure2OptionListener figure2 = new SelectTestFigure2OptionListener(
 				DriverFeature.getDriverManager());
+		SelectTestFigureOptionListener rectangle = new SelectTestFigureOptionListener(
+				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.RECTANGLE);
+		SelectTestFigureOptionListener star = new SelectTestFigureOptionListener(
+				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR);
+		SelectTestFigureOptionListener starScale2 = new SelectTestFigureOptionListener(
+				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR_SCALE_2);
 
 		application.addTest("Figure Joe 1", figure1);
 		application.addTest("Figure Joe 2", figure2);
+		application.addTest("Rectangle", rectangle);
+		application.addTest("Star", star);
+		application.addTest("Star Scale 2", starScale2);
 	}
 
 	/**

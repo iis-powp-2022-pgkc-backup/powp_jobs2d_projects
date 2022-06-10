@@ -58,6 +58,7 @@ public class DriverCommandManager {
 			public void accept(IDriverCommandsVisitor visitor) {
 				visitor.doForCompoundCommand(this);
 			}
+
 		});
 
 	}
