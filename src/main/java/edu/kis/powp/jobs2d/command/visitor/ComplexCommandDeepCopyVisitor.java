@@ -2,40 +2,35 @@ package edu.kis.powp.jobs2d.command.visitor;
 
 import edu.kis.powp.jobs2d.command.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class ComplexCommandDeepCopyVisitor implements IDriverCommandsVisitor {
-    private ComplexCommand deepCopyOfComplexCommand = null;
+    private DriverCommand deepCopyOfComplexCommand = null;
 
     @Override
     public void doForOperateToCommand(OperateToCommand command) {
-        if(deepCopyOfComplexCommand != null)
-            deepCopyOfComplexCommand.appendCommand(command.driverCommandClone());
+            deepCopyOfComplexCommand = command.driverCommandClone();
     }
 
     @Override
     public void doForSetPositionCommand(SetPositionCommand command) {
-        if(deepCopyOfComplexCommand != null)
-            deepCopyOfComplexCommand.appendCommand(command.driverCommandClone());
+            deepCopyOfComplexCommand = command.driverCommandClone();
     }
 
     @Override
     public void doForCompoundCommand(ICompoundCommand command) {
-        if(deepCopyOfComplexCommand == null) {
-            deepCopyOfComplexCommand = new ComplexCommand();
-            Iterator<DriverCommand> iterator = command.iterator();
-            while (iterator.hasNext()) {
-                iterator.next().accept(this);
-            }
+        List<DriverCommand> commandList = new ArrayList<>();
+        Iterator<DriverCommand> iterator = command.iterator();
+        while (iterator.hasNext()) {
+            iterator.next().accept(this);
+            commandList.add(deepCopyOfComplexCommand);
         }
-        else {
-            ComplexCommandDeepCopyVisitor visitor = new ComplexCommandDeepCopyVisitor();
-            command.accept(visitor);
-            deepCopyOfComplexCommand.appendCommand(visitor.getDeepCopyOfComplexCommand());
-        }
+        deepCopyOfComplexCommand = new ComplexCommand(commandList);
     }
 
-    public ComplexCommand getDeepCopyOfComplexCommand() {
+    public DriverCommand getDeepCopyOfComplexCommand() {
         return deepCopyOfComplexCommand;
     }
 
