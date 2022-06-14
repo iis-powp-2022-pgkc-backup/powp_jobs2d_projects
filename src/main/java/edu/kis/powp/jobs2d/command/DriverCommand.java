@@ -17,7 +17,7 @@ public interface DriverCommand {
 
 	default DriverCommand driverCommandClone() {
 		return this.driverCommandClone();
-  }
-  
+	}
+
 	void accept(IDriverCommandsVisitor visitor);
 }

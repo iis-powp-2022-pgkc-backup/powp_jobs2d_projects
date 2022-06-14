@@ -8,10 +8,14 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.visitor.CommandCountingVisitor;
+
+import edu.kis.powp.jobs2d.command.gui.CommandManagerPreview;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
+
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
@@ -22,6 +26,7 @@ import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
 import edu.kis.powp.jobs2d.events.SelectCommandsCountingVisitorOptionListner;
+import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.factories.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawOnFreePanelFeature;
@@ -45,11 +50,14 @@ public class TestJobs2dApp {
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.RECTANGLE);
 		SelectTestFigureOptionListener star = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR);
+		SelectTestFigureOptionListener starScale2 = new SelectTestFigureOptionListener(
+				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR_SCALE_2);
 
 		application.addTest("Figure Joe 1", figure1);
 		application.addTest("Figure Joe 2", figure2);
 		application.addTest("Rectangle", rectangle);
 		application.addTest("Star", star);
+		application.addTest("Star Scale 2", starScale2);
 	}
 
 	/**
@@ -58,7 +66,10 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupCommandTests(Application application) {
+		ComplexCommandFactory factory = new ComplexCommandFactory();
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
+		application.addTest("Star Command", new SelectStarCommandOptionListener(factory));
+		application.addTest("Rect Command", new SelectRectangleCommandOptionListener(factory));
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
@@ -106,6 +117,8 @@ public class TestJobs2dApp {
 	private static void setupWindows(Application application) {
 
 		CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
+		CommandManagerPreview preview = new CommandManagerPreview(commandManager.getPreviewPanel());
+		commandManager.setPreview(preview);
 		application.addWindowComponent("Command Manager", commandManager);
 
 		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
