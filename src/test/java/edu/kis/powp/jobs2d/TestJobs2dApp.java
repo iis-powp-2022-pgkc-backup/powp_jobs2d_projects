@@ -15,6 +15,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
+import edu.kis.powp.jobs2d.drivers.adapter.MoveRightTransformation;
 import edu.kis.powp.jobs2d.drivers.adapter.TransformDriverAdapter;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
@@ -97,7 +98,7 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Special line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
 		DriverFeature.updateDriverInfo();
 
-		driver = new TransformDriverAdapter(drawerController, LineFactory.getBasicLine(), "transformed");
+		driver = new TransformDriverAdapter(drawerController, LineFactory.getBasicLine(), "transformed", new MoveRightTransformation(50));
 		DriverFeature.addDriver("Move line to the right Simulator", driver);
 		DriverFeature.updateDriverInfo();
 	}
