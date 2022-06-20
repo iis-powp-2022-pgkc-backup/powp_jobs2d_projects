@@ -30,4 +30,14 @@ public class SetPositionCommand implements DriverCommand {
 	public DriverCommand copy() {
 		return new SetPositionCommand(posX,posY);
 	}
+
+	@Override
+	public int getX() {
+		return posX;
+	}
+
+	@Override
+	public int getY() {
+		return posY;
+	}
 }

@@ -15,5 +15,7 @@ public interface DriverCommand{
 	 */
 	void execute(Job2dDriver driver);
 	void accept(ICommandVisitor visitor);
+	int getX();
+	int getY();
 	DriverCommand copy();
 }

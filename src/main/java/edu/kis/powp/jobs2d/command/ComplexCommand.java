@@ -53,4 +53,14 @@ public class ComplexCommand implements ICompoundCommand {
 	public String toString() {
 		return name;
 	}
+
+	@Override
+	public int getX() {
+		return 0;
+	}
+
+	@Override
+	public int getY() {
+		return 0;
+	}
 }
