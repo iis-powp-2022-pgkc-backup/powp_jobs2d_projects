@@ -6,7 +6,7 @@ import edu.kis.powp.jobs2d.command.visitor.ICommandVisitor;
 /**
  * DriverCommand interface.
  */
-public interface DriverCommand{
+public interface DriverCommand {
 
 	/**
 	 * Execute command on driver.
@@ -16,7 +16,5 @@ public interface DriverCommand{
 
 	void execute(Job2dDriver driver);
 	void accept(ICommandVisitor visitor);
-	int getX();
-	int getY();
 	DriverCommand copy();
 }

@@ -38,4 +38,9 @@ public class OperateToCommand implements DriverCommand {
 	public int getPosY() {
 		return posY;
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getName() + "X: " + posX + " Y: " + posY;
+	}
 }

@@ -50,12 +50,7 @@ public class SetPositionCommand implements DriverCommand {
 	}
 
 	@Override
-	public int getX() {
-		return posX;
-	}
-
-	@Override
-	public int getY() {
-		return posY;
+	public String toString() {
+		return this.getClass().getName() + "X: " + posX + " Y: " + posY;
 	}
 }

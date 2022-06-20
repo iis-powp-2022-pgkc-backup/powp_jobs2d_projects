@@ -4,6 +4,8 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.macros.DriverCallRecorder;
 import edu.kis.powp.jobs2d.macros.DriverCallRecorderObservable;
 import edu.kis.powp.jobs2d.macros.DriverCallRecorderObserver;
@@ -32,7 +34,7 @@ public class LineDriverAdapter extends DriverCallRecorderObservable implements J
 		this.startX = x;
 		this.startY = y;
 
-		addCall(getBuilder().addSetPosition(x, y).build());
+		addCall(new SetPositionCommand(x, y));
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class LineDriverAdapter extends DriverCallRecorderObservable implements J
 
 		drawController.drawLine(line);
 
-		addCall(getBuilder().addOperateTo(x, y).build());
+		addCall(new OperateToCommand(x, y));
 	}
 
 	@Override

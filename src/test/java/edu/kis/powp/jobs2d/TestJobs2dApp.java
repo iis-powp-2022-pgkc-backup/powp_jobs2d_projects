@@ -150,7 +150,7 @@ public class TestJobs2dApp {
 		JPanel previewPanel = new JPanel();
 		DrawPanelController previewPanelDrawerController = new DrawPanelController();
 		previewPanelDrawerController.initialize(previewPanel);
-		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
+		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic", recorder);
 		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
 		CommandManagerService commandManagerService = new CommandManagerService(previewPanelController);
@@ -208,6 +208,7 @@ public class TestJobs2dApp {
 				setupCommandTests(app);
 				setupLogger(app);
 				setupWindows(app);
+				recorder.startRecording();
 
 				app.setVisibility(true);
 			}
