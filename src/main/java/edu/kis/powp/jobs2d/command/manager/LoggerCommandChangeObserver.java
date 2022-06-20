@@ -1,10 +1,10 @@
 package edu.kis.powp.jobs2d.command.manager;
 
-import java.util.logging.Logger;
-
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
+
+import java.util.logging.Logger;
 
 public class LoggerCommandChangeObserver implements Subscriber {
 
@@ -12,7 +12,9 @@ public class LoggerCommandChangeObserver implements Subscriber {
 
 	public void update() {
 		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-		logger.info("Current command set to: " + command.toString());
+		if (command != null) {
+			logger.info("Current command set to: " + command);
+		}
 	}
 
 	public String toString() {

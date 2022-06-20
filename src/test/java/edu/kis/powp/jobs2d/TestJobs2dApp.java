@@ -10,10 +10,13 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.gui.CommandManagerService;
+import edu.kis.powp.jobs2d.command.panelcontroller.CommandPreviewPanelController;
 import edu.kis.powp.jobs2d.command.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.transformers.*;
+import edu.kis.powp.jobs2d.command.visitor.canvas.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 
 import edu.kis.powp.jobs2d.events.DrawLineMouseListener;
@@ -25,6 +28,8 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.macros.DriverCallRecorder;
+
+import javax.swing.*;
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -55,6 +60,13 @@ public class TestJobs2dApp {
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Test complex command builder", new SelectLoadComplexCommandListener(
 				ComplexCommandFactory.getSquareCommand()));
+
+		application.addTest("Canvas checker A4", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new A4Canvas()));
+		application.addTest("Canvas checker small test", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new SmallRectangleCanvas()));
+		application.addTest("Canvas checker custom", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new RectangleCanvas(133,144)));
+		application.addTest("Canvas checker small circle", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new CircleCanvas(50, "small circle")));
+		application.addTest("Canvas checker big circle", new SelectVisitorExceedingCanvasComplexCommandListener(DriverFeature.getDriverManager(), new CircleCanvas(150, "big circle")));
+
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
 		// Selecting another driver resets previous transformer commands for this driver.
@@ -135,12 +147,19 @@ public class TestJobs2dApp {
 	}
 
 	private static void setupWindows(Application application) {
+		JPanel previewPanel = new JPanel();
+		DrawPanelController previewPanelDrawerController = new DrawPanelController();
+		previewPanelDrawerController.initialize(previewPanel);
+		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
+		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
-		CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
+		CommandManagerService commandManagerService = new CommandManagerService(previewPanelController);
+
+		CommandManagerWindow commandManager = new CommandManagerWindow(commandManagerService);
 		application.addWindowComponent("Command Manager", commandManager);
 
-		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-			commandManager);
+		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(commandManager, commandManagerService);
+
 		CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
 	}
 
