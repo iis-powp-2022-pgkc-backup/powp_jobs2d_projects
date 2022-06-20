@@ -27,11 +27,14 @@ import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.macros.DriverCallRecorder;
 
 import javax.swing.*;
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private static DriverCallRecorder recorder;
 
 	/**
 	 * Setup test concerning preset figures in context.
@@ -127,7 +130,7 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger driver", loggerDriver);
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
-		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic", recorder);
 		DriverFeature.addDriver("Line Simulator", driver);
 
 		DriverComposite driverComposite = new DriverComposite();
@@ -137,7 +140,7 @@ public class TestJobs2dApp {
 
 		DriverFeature.getDriverManager().setCurrentDriver(driver);
 
-		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special", recorder);
 		DriverFeature.addDriver("Special line Simulator", driver);
 
 		DriverFeature.updateDriverInfo();
@@ -147,7 +150,7 @@ public class TestJobs2dApp {
 		JPanel previewPanel = new JPanel();
 		DrawPanelController previewPanelDrawerController = new DrawPanelController();
 		previewPanelDrawerController.initialize(previewPanel);
-		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic");
+		Job2dDriver driver = new LineDriverAdapter(previewPanelDrawerController, LineFactory.getBasicLine(), "basic", recorder);
 		CommandPreviewPanelController previewPanelController = new CommandPreviewPanelController(previewPanel,CommandsFeature.getDriverCommandManager(), driver, previewPanelDrawerController);
 
 		CommandManagerService commandManagerService = new CommandManagerService(previewPanelController);
@@ -183,6 +186,10 @@ public class TestJobs2dApp {
 		DrawLineMouseListener.enable(application.getFreePanel(), DriverFeature.getDriverManager());
 	}
 
+	private static void setDriverCallRecorder() {
+		recorder = new DriverCallRecorder();
+	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -195,11 +202,13 @@ public class TestJobs2dApp {
 				
 				DriverFeature.setupDriverPlugin(app);
 				setMouseDrawer(app);
+				setDriverCallRecorder();
 				setupDrivers(app);
 				setupPresetTests(app);
 				setupCommandTests(app);
 				setupLogger(app);
 				setupWindows(app);
+				recorder.startRecording();
 
 				app.setVisibility(true);
 			}
