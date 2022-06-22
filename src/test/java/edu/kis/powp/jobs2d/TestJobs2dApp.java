@@ -18,6 +18,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorators.Job2dDriverUsageMonitorDecorator;
+import edu.kis.powp.jobs2d.drivers.decorators.subscribers.UsageMonitorDecoratorSubscriber;
 import edu.kis.powp.jobs2d.drivers.gui.DriverUpdateInfoObserver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.factories.ComplexCommandFactory;
@@ -78,6 +79,17 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
+
+		UsageMonitorDecoratorSubscriber usageMonitorDecoratorSubscriber = new UsageMonitorDecoratorSubscriber();
+		application.addComponentMenu(UsageMonitorDecoratorSubscriber.class, "Usage monitor toggle");
+		application.addComponentMenuElementWithCheckBox(
+				UsageMonitorDecoratorSubscriber.class,
+				"Use monitor",
+				(ActionEvent e) -> usageMonitorDecoratorSubscriber.changeMonitoringState(),
+				false
+		);
+		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(usageMonitorDecoratorSubscriber);
+
 		DriverComposite driverComposite = new DriverComposite();
 		DriverFeature.addDriver("Line, Logger, Special Simulators", driverComposite);
 
@@ -93,13 +105,9 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Line Simulator", driver);
 		driverComposite.addDriver(driver);
 
-		DriverFeature.addDriver("Line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
-
 		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Special line Simulator", driver);
 		driverComposite.addDriver(driver);
-
-		DriverFeature.addDriver("Special line Simulator with monitor", new Job2dDriverUsageMonitorDecorator(driver));
 	}
 
 	private static void setupWindows(Application application) {
