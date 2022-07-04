@@ -1,7 +1,10 @@
 package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.visitor.TransformationFlipVisitorImpl;
+import edu.kis.powp.jobs2d.command.visitor.TransformationRotateVisitorImpl;
 import edu.kis.powp.jobs2d.command.visitor.IDriverCommandsVisitor;
+import edu.kis.powp.jobs2d.command.visitor.TransformationScaleVisitorImpl;
 
 /**
  * Implementation of Job2dDriverCommand for operateTo command functionality.
@@ -33,8 +36,18 @@ public class OperateToCommand implements DriverCommand {
 		return new OperateToCommand(this.posX, this.posY);
 	}
 
-  @Override
+	@Override
 	public void accept(IDriverCommandsVisitor visitor) {
 		visitor.doForOperateToCommand(this);
+	}
+
+
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public int getPosX() {
+		return posX;
 	}
 }
