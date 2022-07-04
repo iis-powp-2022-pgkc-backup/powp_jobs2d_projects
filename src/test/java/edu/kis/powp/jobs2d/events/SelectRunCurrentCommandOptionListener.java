@@ -20,7 +20,9 @@ public class SelectRunCurrentCommandOptionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
 		command.execute(driverManager.getCurrentDriver());
-		HistoryCommandList.addCommandToList("gwiazdka", command);
+
+		String name = command.toString().split(" ")[0];
+		HistoryCommandList.addCommandToList(name, command);
 
 	}
 }

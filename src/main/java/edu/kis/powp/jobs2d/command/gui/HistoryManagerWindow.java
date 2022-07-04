@@ -20,6 +20,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,36 +30,61 @@ import java.util.stream.Stream;
 public class HistoryManagerWindow extends JFrame implements WindowComponent {
 
 	private DriverCommandManager commandManager;
+	private JPanel buttonsPanel;
 
 	public HistoryManagerWindow(DriverCommandManager commandManager) {
 		this.commandManager = commandManager;
 		this.setTitle("History Manager");
-		this.setSize(600, 1000);
-		Container content = this.getContentPane();
-		// Grid
-		int numberOfHistoryCommandList = HistoryCommandList.getHistoryCommandList().getSize();
-		content.setLayout(new GridLayout(numberOfHistoryCommandList+1,1));
+		this.setSize(500, 700);
 
-		// TextArea
-		JTextArea text = new JTextArea("History Manager");
-		text.setFont(new Font("Arial Black", Font.BOLD, 24));
-		content.add(text);
+		//title
+		JPanel titlePane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel label = new JLabel("History:");
+		titlePane.add(label);
+		//buttons
+		buttonsPanel = new JPanel();
+		buttonsPanel.setMaximumSize(new Dimension(this.getWidth(),this.getHeight()));
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
+
+		JPanel listPane = new JPanel();
+		listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
+		listPane.add(Box.createRigidArea(new Dimension(0,5)));
+		listPane.add(buttonsPanel);
+		listPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		buttonPane.add(Box.createHorizontalGlue());
+		buttonPane.add(new JButton("Clear"));
+		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+		buttonPane.add(new JButton("Exit"));
+
+
+
+		Container content = getContentPane();
+		content.add(titlePane, BorderLayout.BEFORE_FIRST_LINE);
+		content.add(listPane, BorderLayout.CENTER);
+		content.add(buttonPane, BorderLayout.PAGE_END);
 		updateHistory();
+	}
 
+	private static void addAButton(String text, ActionListener action, Container container) {
+		JButton button = new JButton(text);
+		button.setMaximumSize(new Dimension(container.getMaximumSize().width,50));
+		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		container.add(button);
 	}
 
 	public void updateHistory()
 	{
-		Container content = this.getContentPane();
-		// Buttons
 		DefaultListModel <HistoryCommandObject> commands = HistoryCommandList.getHistoryCommandList();
-		content.removeAll();
+		buttonsPanel.removeAll();
+		//
 		for (int i = 0; i < commands.getSize(); i++) {
 			HistoryCommandObject historyCommand = commands.get(i);
-			JButton button = new JButton(historyCommand.toString());
-			int finalI = i;
-			button.addActionListener((ActionEvent e) -> this.selectEvent(finalI));
-			content.add(button);
+			final int finalI = i;
+			addAButton(historyCommand.toString(),(ActionEvent e) -> this.selectEvent(finalI),buttonsPanel);
 		}
 	}
 

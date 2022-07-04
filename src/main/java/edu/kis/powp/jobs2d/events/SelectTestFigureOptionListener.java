@@ -10,6 +10,7 @@ import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
+import edu.kis.powp.jobs2d.command.history.HistoryCommandList;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.factories.ComplexCommandFactory;
@@ -36,9 +37,11 @@ public class SelectTestFigureOptionListener implements ActionListener {
 		switch (this.testShape) {
 			case FIGURE1:
 				FiguresJoe.figureScript1(driver);
+				HistoryCommandList.addCommandToList("Figure1", complexCommand);
 				break;
 			case FIGURE2:
 				FiguresJoe.figureScript2(driver);
+				HistoryCommandList.addCommandToList("FigureJoe2", complexCommand);
 				break;
 			case RECTANGLE:
 				int x = 100;
@@ -51,6 +54,7 @@ public class SelectTestFigureOptionListener implements ActionListener {
 				commands.add(new OperateToCommand(x, y+height));
 				commands.add(new OperateToCommand(x, y));
 				complexCommand.execute(driver);
+				HistoryCommandList.addCommandToList("Rectangle", complexCommand);
 				break;
 			case STAR:
 				commands.add(new SetPositionCommand(60, 20));
@@ -60,6 +64,7 @@ public class SelectTestFigureOptionListener implements ActionListener {
 				commands.add(new OperateToCommand(20, 110));
 				commands.add(new OperateToCommand(60, 20));
 				complexCommand.execute(driver);
+				HistoryCommandList.addCommandToList("Star", complexCommand);
 				break;
 		}
 	}
