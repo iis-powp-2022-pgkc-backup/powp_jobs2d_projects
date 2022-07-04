@@ -4,13 +4,14 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.HistoryManagerWindow;
+import edu.kis.powp.jobs2d.command.history.HistoryCommandList;
 import edu.kis.powp.jobs2d.command.visitor.CommandCountingVisitor;
 
 import edu.kis.powp.jobs2d.command.gui.CommandManagerPreview;
@@ -35,16 +36,18 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupPresetTests(Application application) {
+
 		SelectTestFigureOptionListener figure1 = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.FIGURE1);
-		SelectTestFigure2OptionListener figure2 = new SelectTestFigure2OptionListener(
-				DriverFeature.getDriverManager());
+		SelectTestFigureOptionListener figure2 = new SelectTestFigureOptionListener(
+				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.FIGURE2);
 		SelectTestFigureOptionListener rectangle = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.RECTANGLE);
 		SelectTestFigureOptionListener star = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR);
 		SelectTestFigureOptionListener starScale2 = new SelectTestFigureOptionListener(
 				DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.STAR_SCALE_2);
+
 
 		application.addTest("Figure Joe 1", figure1);
 		application.addTest("Figure Joe 2", figure2);
@@ -63,9 +66,7 @@ public class TestJobs2dApp {
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Star Command", new SelectStarCommandOptionListener(factory));
 		application.addTest("Rect Command", new SelectRectangleCommandOptionListener(factory));
-
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
-
 	}
 
 	private static void setupVisitors(Application application) {
@@ -108,10 +109,11 @@ public class TestJobs2dApp {
 		CommandManagerPreview preview = new CommandManagerPreview(commandManager.getPreviewPanel());
 		commandManager.setPreview(preview);
 		application.addWindowComponent("Command Manager", commandManager);
-
-		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-				commandManager);
+		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(commandManager);
 		CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
+
+		HistoryManagerWindow historyManager = new HistoryManagerWindow(CommandsFeature.getDriverCommandManager());
+		application.addWindowComponent("History Manager", historyManager);
 	}
 
 	/**

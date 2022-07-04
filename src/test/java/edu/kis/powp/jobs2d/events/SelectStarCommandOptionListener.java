@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.history.HistoryCommandList;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.factories.ComplexCommandFactory;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
@@ -26,5 +27,6 @@ public class SelectStarCommandOptionListener implements ActionListener {
 
 		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
 		manager.setCurrentCommand(commands, "StarCommand");
+
 	}
 }
