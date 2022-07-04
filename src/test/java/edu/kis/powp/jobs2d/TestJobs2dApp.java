@@ -32,7 +32,8 @@ public class TestJobs2dApp {
 	 */
 	private static void setupPresetTests(Application application) {
 		SelectTestFigureOptionListener figure1 = new SelectTestFigureOptionListener(DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.FIGURE1);
-		SelectTestFigure2OptionListener figure2 = new SelectTestFigure2OptionListener(DriverFeature.getDriverManager());
+//		SelectTestFigure2OptionListener figure2 = new SelectTestFigure2OptionListener(DriverFeature.getDriverManager());
+		SelectTestFigureOptionListener figure2 = new SelectTestFigureOptionListener(DriverFeature.getDriverManager(), ComplexCommandFactory.TestShape.FIGURE2);
 
 		application.addTest("Figure Joe 1", figure1);
 		application.addTest("Figure Joe 2", figure2);

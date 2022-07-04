@@ -1,32 +1,15 @@
 package edu.kis.powp.jobs2d.command.gui;
 
-import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.file.IImportCommand;
-import edu.kis.powp.jobs2d.command.file.ImporterFactory;
 import edu.kis.powp.jobs2d.command.history.HistoryCommandList;
 import edu.kis.powp.jobs2d.command.history.HistoryCommandObject;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
-import edu.kis.powp.observer.Subscriber;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileSystemView;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class HistoryManagerWindow extends JFrame implements WindowComponent {
 
@@ -58,11 +41,10 @@ public class HistoryManagerWindow extends JFrame implements WindowComponent {
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
-		buttonPane.add(new JButton("Clear"));
-		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-		buttonPane.add(new JButton("Exit"));
-
-
+		//clear button
+		JButton clearButton = new JButton("Clear");
+		clearButton.addActionListener((ActionEvent e)->clearHistory());
+		buttonPane.add(clearButton);
 
 		Container content = getContentPane();
 		content.add(titlePane, BorderLayout.BEFORE_FIRST_LINE);
@@ -94,12 +76,18 @@ public class HistoryManagerWindow extends JFrame implements WindowComponent {
 
 	public static void selectEvent(int index) {
 		DefaultListModel <HistoryCommandObject> commands = HistoryCommandList.getHistoryCommandList();
-		HistoryCommandObject object = commands.get(index);
-		DriverCommand command = object.getCommand();
 
 		DrawerFeature.getDrawerController().clearPanel();
-		System.out.println("event");
-		System.out.println(index);
+		for (int i = 0; i <= index; i++)
+			commands.get(i).execute();
+
+	}
+
+	public void clearHistory()
+	{
+		HistoryCommandList.Clear();
+		updateHistory();
+		this.repaint();
 	}
 
 	@Override

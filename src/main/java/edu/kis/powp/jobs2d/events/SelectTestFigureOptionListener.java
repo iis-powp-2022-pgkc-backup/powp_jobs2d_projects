@@ -37,11 +37,11 @@ public class SelectTestFigureOptionListener implements ActionListener {
 		switch (this.testShape) {
 			case FIGURE1:
 				FiguresJoe.figureScript1(driver);
-				HistoryCommandList.addCommandToList("Figure1", complexCommand);
+				HistoryCommandList.addCommandToList("FigureJoe1", complexCommand, driver);
 				break;
 			case FIGURE2:
 				FiguresJoe.figureScript2(driver);
-				HistoryCommandList.addCommandToList("FigureJoe2", complexCommand);
+				HistoryCommandList.addCommandToList("FigureJoe2", complexCommand, driver);
 				break;
 			case RECTANGLE:
 				int x = 100;
@@ -54,7 +54,7 @@ public class SelectTestFigureOptionListener implements ActionListener {
 				commands.add(new OperateToCommand(x, y+height));
 				commands.add(new OperateToCommand(x, y));
 				complexCommand.execute(driver);
-				HistoryCommandList.addCommandToList("Rectangle", complexCommand);
+				HistoryCommandList.addCommandToList("Rectangle", complexCommand, driver);
 				break;
 			case STAR:
 				commands.add(new SetPositionCommand(60, 20));
@@ -64,7 +64,7 @@ public class SelectTestFigureOptionListener implements ActionListener {
 				commands.add(new OperateToCommand(20, 110));
 				commands.add(new OperateToCommand(60, 20));
 				complexCommand.execute(driver);
-				HistoryCommandList.addCommandToList("Star", complexCommand);
+				HistoryCommandList.addCommandToList("Star", complexCommand, driver);
 				break;
 		}
 	}
