@@ -10,6 +10,7 @@ import edu.kis.powp.jobs2d.command.history.HistoryCommandList;
 import edu.kis.powp.jobs2d.command.history.HistoryCommandObject;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.observer.Subscriber;
 
 import javax.swing.*;
@@ -43,6 +44,7 @@ public class HistoryManagerWindow extends JFrame implements WindowComponent {
 		titlePane.add(label);
 		//buttons
 		buttonsPanel = new JPanel();
+		buttonsPanel.setBackground(Color.white);
 		buttonsPanel.setMaximumSize(new Dimension(this.getWidth(),this.getHeight()));
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
 
@@ -71,6 +73,7 @@ public class HistoryManagerWindow extends JFrame implements WindowComponent {
 
 	private static void addAButton(String text, ActionListener action, Container container) {
 		JButton button = new JButton(text);
+		button.addActionListener(action);
 		button.setMaximumSize(new Dimension(container.getMaximumSize().width,50));
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		container.add(button);
@@ -89,12 +92,12 @@ public class HistoryManagerWindow extends JFrame implements WindowComponent {
 	}
 
 
-	public void selectEvent(int index) {
+	public static void selectEvent(int index) {
 		DefaultListModel <HistoryCommandObject> commands = HistoryCommandList.getHistoryCommandList();
 		HistoryCommandObject object = commands.get(index);
 		DriverCommand command = object.getCommand();
 
-
+		DrawerFeature.getDrawerController().clearPanel();
 		System.out.println("event");
 		System.out.println(index);
 	}
